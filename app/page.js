@@ -3,7 +3,10 @@
 import { faq, pricingFeaturesList } from "@/assets";
 import ButtonLogin from "@/components/ButtonLogin";
 import FAQ from "@/components/FAQ";
+import Image from "next/image";
 import { useState } from "react";
+import productDemo from '@/public/assets/productDemo.jpeg'
+
 
 export default function Home() {
   const [islogin, setLogin] = useState(true);
@@ -12,7 +15,7 @@ export default function Home() {
     <main>
       {/* Header */}
       <section className="bg-base-200" >
-        <div className=" max-w-3xl mx-auto  flex justify-between items-center bg-base-200 px-8 py-2">
+        <div className=" max-w-5xl mx-auto  flex justify-between items-center bg-base-200 px-8 py-2">
           <div className="font-bold">RapidCode</div>
           <div className=" space-x-4 max-md:hidden">
             <a className="link link-hover" href="">content</a>
@@ -24,15 +27,21 @@ export default function Home() {
         </div>
       </section>
       {/* Hero */}
-      <section className="text-center py-32 px-8 max-w-3xl mx-auto">
+      <section className="text-center py-32 px-8 max-w-5xl mx-auto flex lg:text-left items-center lg:items-start  flex-col lg:flex-row gap-14  ">
+        < Image src={productDemo} alt="productDemoImg" className="w-96 rounded-xl" />
 
-        <h1 className="text-4xl lg:text-5xl font-extrabold mb-6">Collect customer feedback to build better products</h1>
+
+
         <div>
-          <p className="opacity-90 mb-10">create a feedback board in minutes, prioritize features, and build
-            products you customers will love
-          </p>
+          <h1 className="text-4xl lg:text-5xl font-extrabold mb-6">Collect customer feedback to build better products</h1>
+          <div>
+            <p className="opacity-90 mb-10">create a feedback board in minutes, prioritize features, and build
+              products you customers will love
+            </p>
+          </div>
+          <ButtonLogin islogin={islogin} name={name} />
         </div>
-        <ButtonLogin islogin={islogin} name={name} />
+
       </section>
       {/* Pricin g */}
       <section className="bg-base-200" id="pricing">
@@ -83,8 +92,8 @@ export default function Home() {
           <p className="text-sm uppercase text-center text-primary font-medium p-8">FAQ</p>
           <h2 className="text-3xl lg:text-4xl font-extrabold mb-12 text-center ">
             Frequently Asked Questions</h2>
-          {faq.map((qa) => (
-            <ul className="text-center max-w-lg mx-auto">
+          {faq.map((qa, idx) => (
+            <ul key={idx} className="text-center max-w-lg mx-auto">
               <FAQ qa={qa} />
 
             </ul>
