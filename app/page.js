@@ -1,16 +1,18 @@
-'use client'
+
 
 import { faq, pricingFeaturesList } from "@/assets";
 import ButtonLogin from "@/components/ButtonLogin";
 import FAQ from "@/components/FAQ";
 import Image from "next/image";
-import { useState } from "react";
+
 import productDemo from '@/public/assets/productDemo.jpeg'
+import { auth } from "@/auth";
 
 
-export default function Home() {
-  const [islogin, setLogin] = useState(true);
-  const name = 'Rohit'
+export default async function Home() {
+
+  const session = await auth()
+
   return (
     <main>
       {/* Header */}
@@ -23,7 +25,8 @@ export default function Home() {
             <a className="link link-hover" href="#FAQ">FAQ</a>
 
           </div>
-          <div><ButtonLogin islogin={islogin} name={name} /></div>
+          <div>
+            <ButtonLogin session={session} /></div>
         </div>
       </section>
       {/* Hero */}
@@ -39,7 +42,7 @@ export default function Home() {
               products you customers will love
             </p>
           </div>
-          <ButtonLogin islogin={islogin} name={name} />
+          <ButtonLogin session={session} />
         </div>
 
       </section>
@@ -79,7 +82,7 @@ export default function Home() {
 
 
             </ul>
-            <ButtonLogin islogin={islogin} name={name} extraStyle="w-full" />
+            <ButtonLogin session={session} extraStyle="w-full" />
           </div>
         </div>
       </section>

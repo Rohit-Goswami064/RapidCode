@@ -13,7 +13,7 @@ const tailwindConfig = {
   plugins: [
     require("daisyui"),
   ],
-  darkMode: "classN", // Explicitly enable class-based dark mode
+  darkMode: "className", // Explicitly enable class-based dark mode
   daisyui: {
     themes: ["light", 'dark', 'cupcake'], // Use only the "light" theme
   },
