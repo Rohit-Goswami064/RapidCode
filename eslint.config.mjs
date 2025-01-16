@@ -19,7 +19,8 @@ export default [
         files: ['*.js'],
         rules: {
           'next/core-web-vitals': 'warn', // or any other configuration
-          'eslint:recommended': 'error',  // or any other configuration
+          'eslint:recommended': 'error', // or any other configuration
+
         },
       },
     ],

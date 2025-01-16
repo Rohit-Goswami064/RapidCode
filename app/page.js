@@ -4,7 +4,6 @@ import { faq, pricingFeaturesList } from "@/assets";
 import ButtonLogin from "@/components/ButtonLogin";
 import FAQ from "@/components/FAQ";
 import Image from "next/image";
-
 import productDemo from '@/public/assets/productDemo.jpeg'
 import { auth } from "@/auth";
 
