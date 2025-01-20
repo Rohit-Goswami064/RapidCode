@@ -2,8 +2,9 @@ import { auth } from '@/auth'
 import ButtonLogOut from '@/components/ButtonLogOut'
 import NewFormBoard from '@/components/NewFormBoard'
 import connectMongo from '@/libs/mongoose'
-import User from '@/models/User' 
+import User from '@/models/User'
 import Board from "@/models/Board"; // Ensure this is imported
+import Link from 'next/link'
 
 
 
@@ -36,12 +37,19 @@ const dashboard = async () => {
                 <div>
 
                     <h1 className=' font-extrabold text-xl mb-4'>
-                        {user.boards.length}   boards
+                        {user.boards.length}   Boards
                     </h1>
                     <ul className='space-y-4'
                     > {user.boards.map((board) => {
                         return (
-                            <div key={board.id} className='bg-base-100 p-6 rounded-3xl'>{board.name}</div>
+                            <li key={board._id}
+                            >
+                                <Link
+                                    href={`dashboard/b/${board._id}`}
+                                    className=' block bg-base-100 p-6 rounded-3xl hover:bg-neutral hover:text-neutral-content duration-200'>
+                                    {board.name}
+
+                                </Link></li>
                         )
 
                     })}</ul>
@@ -49,7 +57,7 @@ const dashboard = async () => {
 
             </section>
 
-        </main>
+        </main >
     )
 }
 

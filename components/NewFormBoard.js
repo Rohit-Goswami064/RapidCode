@@ -21,7 +21,7 @@ const NewFormBoard = () => {
             router.refresh();
             toast.success("Board Created")
         } catch (error) {
-            toast.error(error.response?.data.error || error.message || 'Something went wrong') // Log network or server errors
+            toast.error(error.response?.data?.error || error.message || 'Something went wrong') // Log network or server errors
         } finally {
             setIsloading(false);
         }
