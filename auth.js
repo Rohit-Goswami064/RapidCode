@@ -4,9 +4,8 @@ import GitHub from "next-auth/providers/github"
 import clientPromise from "./libs/mango"
 import Google from "next-auth/providers/google"
 
-
-
-export const { handlers, signIn, signOut, auth } = NextAuth({
+// First, define the auth configuration
+export const authOptions = {
     providers: [
         GitHub({
             clientId: process.env.AUTH_GITHUB_ID,
@@ -16,7 +15,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             clientId: process.env.GOOGLE_ID,
             clientSecret: process.env.GOOLE_SECRET,
         })
-
     ],
+    callbacks: {
+        async session({ session, user }) {
+            if (session?.user) {
+                session.user.id = user.id
+            }
+            return session
+        },
+    },
     adapter: MongoDBAdapter(clientPromise),
-})
+}
+
+// Create the NextAuth handler
+const handler = NextAuth(authOptions)
+
+// Export the handler methods
+export { handler as GET, handler as POST }

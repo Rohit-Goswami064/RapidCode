@@ -1,16 +1,15 @@
-
-
 import { faq, pricingFeaturesList } from "@/assets";
 import ButtonLogin from "@/components/ButtonLogin";
 import FAQ from "@/components/FAQ";
 import Image from "next/image";
 import productDemo from '@/public/assets/productDemo.jpeg'
-import { auth } from "@/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth";
 
 
 export default async function Home() {
 
-  const session = await auth()
+  const session = await getServerSession(authOptions);
 
   return (
     <main>

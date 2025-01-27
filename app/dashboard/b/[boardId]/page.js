@@ -1,14 +1,15 @@
 import connectMongo from "@/libs/mongoose"
 import Board from "@/models/Board";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
+import {  authOptions } from "@/auth";
 import Link from "next/link";
 import CardBoardLink from "@/components/CardBoardLink";
 import ButtonDeleteBoard from "@/components/ButtonDeleteBoard";
+import { getServerSession } from "next-auth";
 
 
 const getBoardId = async (boardId) => {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
     await connectMongo();
 
     const board = await Board.findOne({

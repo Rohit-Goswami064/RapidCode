@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
+import { auth, authOptions } from "@/auth";
 import connectMongo from "@/libs/mongoose";
 import Board from "@/models/Board";
 import User from "@/models/User";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 
@@ -19,7 +20,7 @@ export async function POST(req) {
         }
 
 
-        const session = await auth();
+        const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse(
                 { error: "Not authorized" },
@@ -45,7 +46,6 @@ export async function POST(req) {
 
 
 export async function DELETE(req) {
-    console.log(req.nextUrl)
     try {
         const { searchParams } = req.nextUrl;
         const boardId = searchParams.get('boardId');
@@ -59,7 +59,7 @@ export async function DELETE(req) {
 
 
 
-        const session = await auth();
+        const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json(
                 { error: "Not Authorized" },
