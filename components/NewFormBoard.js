@@ -51,4 +51,4 @@ const NewFormBoard = () => {
     )
 }
 
-export default NewFormBoard
+export default NewFormBoard;
