@@ -17,6 +17,7 @@ const getData = async (boardId) => {
         redirect('/')
     }
 
+
     return {
         board,
         posts,

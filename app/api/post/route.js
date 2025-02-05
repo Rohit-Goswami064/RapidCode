@@ -6,6 +6,7 @@ import connectMongo from "@/libs/mongoose";
 import { Filter } from "bad-words";
 import { authOptions } from "@/auth";
 import { getServerSession } from "next-auth";
+import User from "@/models/User";
 
 export async function POST(req) {
     try {
@@ -34,3 +35,45 @@ export async function POST(req) {
     }
 }
 
+export async function DELETE(req) {
+    try {
+        const { searchParams } = await req.nextUrl;
+        const postId = searchParams.get('postId');
+        if (!postId) {
+            return NextResponse.json(
+                { error: "postId is required" },
+                { status: 400 });
+        };
+
+
+        const session = await getServerSession(authOptions);
+        if (!session) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 });
+        };
+        await connectMongo();
+        const user = await User.findById(session.user.id);
+        if (!user) {
+            return NextResponse.json(
+                { error: "User not found" },
+                { status: 404 });
+        };
+
+        const post = await Post.findByIdAndDelete(postId);
+        if (!post) {
+            return NextResponse.json(
+                { error: "Post not found" },
+                { status: 404 });
+        };
+        if (!user.boards.includes(post.boardId.toString())) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 });
+        };
+        await Post.deleteOne({ _id: postId });
+        return NextResponse.json({ message: "Post deleted" });
+    } catch (e) {
+        return NextResponse.json({ error: e.message }, { status: 500 });
+    }
+}
