@@ -6,3 +6,7 @@
   font-size: 48px;
   font-weight: 800;
 }
+
+.scrollable-content {
+  scroll-behavior: smooth;
+}

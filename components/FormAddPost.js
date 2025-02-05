@@ -30,7 +30,7 @@ const FormAddPost = ({ boardId }) => {
     };
 
     return (
-        <form className='bg-base-100 p-8 rounded-3xl space-y-8 ' onSubmit={handleSubmit}>
+        <form className='bg-base-100 p-8 rounded-3xl space-y-8 w-full md:w-96  shrink-0 sticky top-8' onSubmit={handleSubmit}>
             <p className='font-bold text-lg '>Suggest a feature</p>
             <label className="form-control w-full ">
                 <div className="label">
