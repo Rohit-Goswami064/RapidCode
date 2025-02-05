@@ -50,7 +50,7 @@ export default async function FeedbackBoard({ params }) {
                     <ButtonDeleteBoard boardId={boardId} />
                 </div>
                 <div>
-                    <ul className="space-y-4">
+                    <ul className="space-y-4  md:w-96	">
                         {posts.map((post) => (
                             <CardPostAdmin key={post._id} post={post} />
                         ))}
