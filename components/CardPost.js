@@ -3,7 +3,7 @@ import ButtonUpvote from './ButtonUpvote'
 
 const CardPost = ({ post }) => {
     return (
-        <li className='bg-base-100 rounded-2xl p-6 flex justify-between items-center '>
+        <li className='bg-base-100 rounded-2xl p-6 flex justify-between items-start  '>
             <div>
                 <div className=' font-bold mb-1'>{post.title} </div>
                 <div className="opacity-80 leading-relaxed max-h-32 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200 scrollable-content">
