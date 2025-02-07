@@ -9,68 +9,37 @@ const ButtonUpvote = ({ postId, initialVoteCount }) => {
     const localStorageVoteCountKey = `rapideCode-voteCount-${postId}`;
 
     const [hasVoted, setHasVoted] = useState(false);
-    const [voteCount, setVoteCount] = useState(Number(initialVoteCount) || 0);
-    const [isVoting, setIsVoting] = useState(false);
+    const [voteCount, setVoteCount] = useState(() => {
+        return Number(initialVoteCount ?? 0);
+    });
 
-    // ✅ **Check `localStorage` on Component Mount**
     useEffect(() => {
         if (typeof window !== 'undefined') {
-            const storedVoteCount = localStorage.getItem(localStorageVoteCountKey);
-            const voted = localStorage.getItem(localStorageVotedKey);
-
-            if (storedVoteCount) {
-                setVoteCount(Number(storedVoteCount)); // Load stored vote count
-            } else {
-                setVoteCount(Number(initialVoteCount) || 0); // Fallback to initial count
-            }
-
-            setHasVoted(!!voted);
+            const storedVoteCount = Number(localStorage.getItem(localStorageVoteCountKey));
+            setVoteCount(isNaN(storedVoteCount) ? Number(initialVoteCount ?? 0) : storedVoteCount);
+            setHasVoted(!!localStorage.getItem(localStorageVotedKey));
         }
-    }, []);
+    }, [initialVoteCount]);
 
     const handleVote = async () => {
-        if (isVoting) return;
-        setIsVoting(true);
-
+        const newVoteState = !hasVoted;
+        setHasVoted(newVoteState);
         try {
-            if (!hasVoted) {
-                const newCount = voteCount + 1;
-                setVoteCount(newCount);
-                setHasVoted(true);
-                await axios.post(`/api/vote?postId=${postId}`);
-
-                localStorage.setItem(localStorageVotedKey, 'true');
-                localStorage.setItem(localStorageVoteCountKey, newCount);
-            } else {
-                const newCount = voteCount - 1;
-                setVoteCount(newCount);
-                setHasVoted(false);
-                await axios.delete(`/api/vote?postId=${postId}`);
-
-                localStorage.removeItem(localStorageVotedKey);
-                localStorage.setItem(localStorageVoteCountKey, newCount);
-            }
+            await axios.post(`/api/vote?postId=${postId}`);
+            const newCount = voteCount + (newVoteState ? 1 : -1);
+            setVoteCount(newCount);
+            localStorage.setItem(localStorageVoteCountKey, newCount);
+            newVoteState ? localStorage.setItem(localStorageVotedKey, 'true') : localStorage.removeItem(localStorageVotedKey);
         } catch (error) {
             toast.error(error.response?.data?.error || 'Something went wrong');
-            // Revert the optimistic updates if there's an error
-            if (!hasVoted) {
-                setVoteCount(voteCount);
-                setHasVoted(false);
-            } else {
-                setVoteCount(voteCount);
-                setHasVoted(true);
-            }
-        } finally {
-            setIsVoting(false);  // This ensures loading state is always cleared
+            setHasVoted(!newVoteState);
         }
     };
 
     return (
         <button
             onClick={handleVote}
-            className={`border group px-4 py-2 rounded-xl text-lg m-2 hover:btn-outline hover:text-black transition-all duration-200 ${hasVoted ? 'bg-neutral text-neutral-content' : 'btn-outline text-black'
-                }`}
-            disabled={isVoting}
+            className={`border group px-4 py-2 rounded-xl text-lg m-2 hover:btn-outline hover:text-black transition-all duration-200 ${hasVoted ? 'bg-neutral text-neutral-content' : 'btn-outline text-black'}`}
         >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -82,7 +51,6 @@ const ButtonUpvote = ({ postId, initialVoteCount }) => {
             >
                 <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 15.75 7.5-7.5 7.5 7.5" />
             </svg>
-
             {voteCount}
         </button>
     );
